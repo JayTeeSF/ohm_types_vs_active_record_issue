@@ -1,0 +1,29 @@
+The purpose of this repo is simply to identify a conflict between two gems:
+  activesupport & ohm-contrib (i.e. ohm-contrib's typecasting).
+
+The work-around in lib/ is by no means a "solution". It exists solely to confirm conflict.
+
+If you'd like to see what this repo offers, after many gem installs*, run:
+cutest test/ohm_type_bug_test.rb
+
+At which point, you'll notice that one of the tests fails.
+The issue is that Ohm::Types returns Ohm::Types::Time, which masquerades as a Time Object.
+This conflicts with ActiveSupport's own Time-masquerading.
+In particular, ActiveSupport instruments it's "Time" objects with to_s(:db) functionality and Ohm::Types::Time doesn't know about this.
+Thus, when stuffing Ohm-attributes into ActiveRecord objects, things go "boom!"
+
+(Moreover, I ran across a case where strange artifacts (i.e. leading "---"'s) corrupted my AR Object, when I stuffed an Ohm::Type::Strings into it's attribute.
+Unfortunately, I have yet to recreate this in a test.)
+
+*Gem installs (give or take a few ;-) ):
+activesupport (3.0.7)
+cutest (1.1.0)
+ohm (0.1.3)
+ohm-contrib (0.1.1)
+override (0.0.10)
+rake (0.8.7)
+redis (2.2.0)
+SystemTimer (1.2.3)
+tzinfo (0.3.27)
+yajl-ruby (0.8.2)
+
