@@ -32,13 +32,15 @@ test "should be able to convert the ActiveSupport Time-val to db-friendly format
   assert NOW.is_a?(Time)
 
   assert_nothing_raised do
-    NOW
-    NOW.to_s
     NOW.to_s(:db)
   end
 end
 
 test "should return the same sort of Time object" do
+  assert_nothing_raised do
+    NOW.to_s(:db)
+  end
+
   ohm = CacheClassWithOhmTypes.create(:created_at => NOW)
   # puts "ohm.created_at: #{ohm.created_at}"
   assert ohm.created_at.is_a?(Time)
@@ -46,6 +48,10 @@ test "should return the same sort of Time object" do
 end
 
 test "should be able to convert a Time-attribute to db-friendly format" do
+  assert_nothing_raised do
+    NOW.to_s(:db)
+  end
+
   ohm = CacheClassWithOhmTypes.create(:created_at => NOW)
   # puts "this fails -- created_at isn't really a Time value: #{ohm.created_at}"
  assert_nothing_raised do
